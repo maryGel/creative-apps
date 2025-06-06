@@ -14,7 +14,11 @@ function Header (){
               />
             </button> 
             <div
-            className ="absolute left-0 z-50 invisible w-48 p-4 mt-2 transition-all duration-300 ease-in-out transform bg-gray-700 rounded-lg shadow-lg opacity-0 top-full group-hover:opacity-100 group-hover:visible group-hover:translate-y-2"
+            className = {`absolute left-0 z-50 invisible w-48 p-4 
+              mt-2 transition-all duration-300 ease-in-out 
+              transform bg-gray-700 rounded-lg shadow-lg 
+              opacity-0 top-full group-hover:opacity-100 
+              group-hover:visible group-hover:translate-y-2`}
             style={{ width: '200px' }}
             >
             <div className='relative z-40 p-2 space-y-2'>
