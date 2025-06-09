@@ -23,8 +23,8 @@ function TodoButtons(){
                 src="./images/todolist/search.png" 
                 alt="Search" 
                 className={`
-                  w-4 h-4 transition-transform duration-200 ease-in-out group-hover:scale-110
-                  `}
+                  w-4 h-4 transition-transform duration-200 ease-in-out group-hover:scale-75
+                `}
               />
             </div>
         </button>
