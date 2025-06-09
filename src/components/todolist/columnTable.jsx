@@ -21,11 +21,11 @@ export const columnTable = [
     accessorKey: 'status',
     header: 'Status',
     enableResizing: true,
-    size: 50,
+    size: 150,
     cell: ({ row }) => {
       const status = row.getValue('status');
       return (
-        <div class name={`flex items-center  `}       
+        <div className={`flex items-center  `}       
         >
           <span className={`flex px-3 py-2 text-xs font-semibold rounded-lg justify-center 
             ${status === 'Completed' ? 'bg-green-100 text-green-800' : 
@@ -40,7 +40,7 @@ export const columnTable = [
     accessorKey: 'duedate',
     header: 'Due Date',
     enableResizing: true,
-    size: 50,
+    size: 100,
     cell: ({row}) => {
       const dueDate = row.getValue('duedate');
       return (
