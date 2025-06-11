@@ -18,8 +18,6 @@ function TodoTable(){
   const dataTodo = React.useMemo(() => dataJSON, []);
   const finalColumns = React.useMemo(() => columnTable, []);
 
-
-
   // Initialize the table with data and columns
   const table = useReactTable({
     columns: finalColumns,
@@ -64,8 +62,8 @@ function TodoTable(){
                       );                      
                     }
                     )}
-                    <th className={`p-3 font-semibold tracking-wide text-left border border-gray-300 w-5`} scope="col">Action</th>         
-                    <th className={`p-3 font-semibold tracking-wide text-left border border-gray-300 w-5`} scope="col">Complete</th>                   
+                    <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Action</th>         
+                    <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Complete</th>                   
                  </tr>
                 );
               })}
@@ -79,7 +77,7 @@ function TodoTable(){
                     return (
                       <td 
                         key={cell.id} 
-                        className={`p-2 text-xs text-gray-700 border border-gray-200`}
+                        className={`p-1 px-3 text-xs text-gray-700 border border-gray-200`}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
@@ -87,14 +85,14 @@ function TodoTable(){
                     
                   }
                   )}
-                <td className = {`p-2 text-xs text-gray-700 border border-gray-300`} >
+                <td className = {`p-2 text-xs text-gray-700 border border-gray-200`} >
                   <button className="text-blue-400 hover:text-blue-600 ">Edit</button>
                 </td>
                   
-                 <td className ={`p-4 flex justify-center align-center border h-full`} >
+                 <td className ={`p-[20%] first-letter my-auto flex justify-center align-center border  border-gray-200`} >
                     <button>
                     <img 
-                      className={`w-4 h-4 opacity-30 hover:opacity-100 hover:scale-110 transition-transform duration-300`} 
+                      className={`w-5 h-5 opacity-30 hover:opacity-100 hover:scale-110 transition-transform duration-300`} 
                       src='./images/todolist/star.png' alt="complete-task"
                     />
                     </button>
