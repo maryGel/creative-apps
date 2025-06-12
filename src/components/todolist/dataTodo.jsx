@@ -1,4 +1,4 @@
-[
+const dataTodoApp = [
   {
     "id": 1,
     "task": "Optimize project deadlines for better workflow.",
@@ -80,3 +80,6 @@
     "complete": false
   }
 ]
+
+
+export default dataTodoApp;

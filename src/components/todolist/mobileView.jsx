@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function MobileView({dataTodo}){
+function MobileView({dataTodo, handleComplete }){
   return (
     <div className={`w-full grid grid-cols-1 gap-4 md:hidden`}>
     {/* Mapping the table content for mobile view */}
@@ -36,7 +36,9 @@ function MobileView({dataTodo}){
           <div className='flex items-center justify-between'>
             <div>Due on: {tableData.duedate}</div>
             <div>
-              <button>
+              <button
+                onClick={() => handleComplete(tableData.id)}
+              >
                 <img 
                   className={`w-4 h-4 opacity-30 outline-black hover:opacity-100 hover:scale-110 transition-transform duration-300`} 
                   src='./images/todolist/star.png' alt="complete-task"
@@ -45,7 +47,6 @@ function MobileView({dataTodo}){
             </div>  
           </div>
         </div>
-
       );
       }
       )}    

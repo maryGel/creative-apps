@@ -42,12 +42,8 @@ export const columnTable = [
     enableResizing: true,
     size: 100,
     cell: ({row}) => {
-      const dueDate = row.getValue('duedate');
-      return (
-        <div className='text-xs font-semibold text-gray-600'>
-          {dueDate}
-        </div>
-      );
+      const date = row.original.duedate;
+      return date ? new Date(date).toLocaleDateString(): "No date"
     }
   }
   // {

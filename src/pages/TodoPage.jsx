@@ -1,11 +1,14 @@
 import { useState  } from 'react';
-import EditTodo from '../components/todolist/editTodo.jsx';
+import FilterTodo from '../components/todolist/filterTodo.jsx';
 import TodoTable from '../components/todolist/todoTable.jsx';
 import TodoButtons from '../components/todolist/todobutton.jsx';
+import useTasks from '../components/todolist/useTasks.jsx'
 
 
 function TodoPage(){
 
+  const { tasks, addTask, updateTask, deleteTask } = useTasks();
+  
   const [openFilter, setOpenFilter] = useState(false);
 
   return (
@@ -15,11 +18,16 @@ function TodoPage(){
         <TodoButtons
           openFilter = {openFilter}
           setOpenFilter = {setOpenFilter}
+          addTask = { addTask }
         />
       </div>
     
-    {openFilter && <EditTodo />}
-    <TodoTable />
+    {openFilter && <FilterTodo />}
+    <TodoTable
+    tasks = {tasks}
+    updateTask = {updateTask}
+    deleteTask = { deleteTask } 
+    />
     
     </div>
   );

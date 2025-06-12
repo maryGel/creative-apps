@@ -1,21 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { 
   useReactTable, 
   flexRender,
   getCoreRowModel, 
 } from '@tanstack/react-table';
-import dataJSON from '../todolist/dataTodo.json';
 
 import './todo.css';
 
 // components
 import {columnTable} from './columnTable';
 import MobileView from './mobileView';
-  
 
-function TodoTable(){
-  // Load data from JSON file
-  const dataTodo = React.useMemo(() => dataJSON, []);
+function TodoTable({tasks, updateTask}){
+  // Load data 
+  const dataTodo = React.useMemo(() => tasks, [tasks]);
   const finalColumns = React.useMemo(() => columnTable, []);
 
   // Initialize the table with data and columns
@@ -29,11 +27,21 @@ function TodoTable(){
       enableResizing: true,
     }
   });
-  console.log(table.getHeaderGroups());
+
+  const handleComplete = (id) => {
+    updateTask(id, { complete: true, status: "Completed"});
+  };
+
+  const [editingTask, setEditingTask] = useState(null);
+
+  // const handleDelete = (id) => {
+  //   deleteTask(id);
+  // }
+
 
   return (
     <>
-      {/* Laptop view */}
+      {/* Laptop  view */}
       <div className='hidden w-full overflow-auto text-xs rounded-lg shadow table-auto md:block'>
         <table className= {`table-auto w-full text-left text-gray-500`}>
             <thead className={`bg-gray-50 border-b-2 border-gray-200 `}>
@@ -85,17 +93,28 @@ function TodoTable(){
                     
                   }
                   )}
+                  {/* Edit Button */}
                 <td className = {`p-2 text-xs text-gray-700 border border-gray-200`} >
-                  <button className="text-blue-400 hover:text-blue-600 ">Edit</button>
+                  <button 
+                    className="text-blue-400 hover:text-blue-600 "
+                    onClick={()=> setEditingTask(rowElement.id)}
+                    openCreateTask={!!editingTask}
+                    initialTask={editingTask}
+                  >
+                    Edit
+                  </button>
                 </td>
                   
+                  {/* Complete (star icon) button */}
                  <td className ={`p-[20%] first-letter my-auto flex justify-center align-center border  border-gray-200`} >
-                    <button>
+                  <button
+                    onClick={() => handleComplete(rowElement.original.id)}
+                  >
                     <img 
                       className={`w-5 h-5 opacity-30 hover:opacity-100 hover:scale-110 transition-transform duration-300`} 
                       src='./images/todolist/star.png' alt="complete-task"
                     />
-                    </button>
+                  </button>
                   </td>   
                 </tr>
                    )
@@ -107,6 +126,7 @@ function TodoTable(){
       {/* Mobile view */}
       <MobileView 
       dataTodo={dataTodo}
+      handleComplete = {handleComplete}
       />
     </>
   );

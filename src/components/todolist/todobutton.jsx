@@ -1,9 +1,22 @@
 import CreateTask from './createTask';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-function TodoButtons( { setOpenFilter}){
+
+function TodoButtons( { addTask, setOpenFilter}){
 
   const [openCreateTask, setOpenCreateTask] = useState(false);
+  const taskInputRef = useRef(null);
+  const [task, setTask] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
+
+  const handleAddTask = () => {
+    addTask({task, description, duedate: dueDate});
+    setTask('');
+    setDescription('');
+    setDueDate('');
+    setOpenCreateTask(false);
+  }
 
   return (
     <>
@@ -24,13 +37,12 @@ function TodoButtons( { setOpenFilter}){
               `}
             />
             <div className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-transparent md:w-5 `}>
-              <img 
+              <img  
                 src="./images/todolist/search.png" 
                 alt="Search" 
                 className={`
                   w-4 h-4 transition-transform duration-200 ease-in-out group-hover:scale-75 md:group-hover:scale-90 md:w-5 md:h-5
                 `}
-
               />
             </div>
         </button>
@@ -43,7 +55,7 @@ function TodoButtons( { setOpenFilter}){
             src="./images/todolist/filter.png" 
             alt="filter" 
             className="w-4 h-4 mr-2 transition-transform duration-200 ease-in-out cursor-pointer md:w-5 md:h-5 hover:tranform hover:scale-110"
-            onClick={ () => setOpenFilter(true)}
+            onClick={ () => setOpenFilter(prev => !prev)}
           />
           </button>
         </div>
@@ -53,17 +65,24 @@ function TodoButtons( { setOpenFilter}){
             src="./images/todolist/plus.png" 
             alt="Add Todo" 
             className="w-4 h-4 mr-2 transition-transform duration-200 ease-in-out cursor-pointer md:w-5 md:h-5 hover:tranform hover:scale-110"
-            onClick={() => setOpenCreateTask(true)} 
-                    
+            onClick={() => setOpenCreateTask(true)}                    
           />
           </button>
-        </div> 
-        <CreateTask
-            openCreateTask={openCreateTask} 
-            setOpenCreateTask={setOpenCreateTask}
-        />       
+        </div>      
       </div>     
     </div> 
+      <CreateTask
+        openCreateTask={openCreateTask}
+        setOpenCreateTask={setOpenCreateTask}
+        taskInputRef={taskInputRef}
+        task = {task}
+        setTask={setTask}
+        description={description}
+        setDescription={setDescription}
+        dueDate={dueDate}
+        setDueDate={setDueDate}
+        addTask={handleAddTask}
+      />  
     </>
   );
 }

@@ -6,7 +6,7 @@ import Chip from '@mui/material/Chip';
 import { Paper } from '@mui/material';
 
 
-function EditTodo( ){
+function FilterTodo( ){
 
   const optionStatus = [
     'Complete' ,
@@ -22,6 +22,7 @@ const CustomPaper = (props) => (
         fontSize: '0.75rem',
         minHeight: 'auto',
         lineHeight: 1,
+
       },
     }}
   />
@@ -68,13 +69,10 @@ const CustomPaper = (props) => (
             />
           )}
         >
-        </Autocomplete>
-      </Stack>    
-
+        </Autocomplete> 
+      </Stack>   
     </div>
-
-
   );
 }
 
-export default EditTodo;
+export default FilterTodo;
