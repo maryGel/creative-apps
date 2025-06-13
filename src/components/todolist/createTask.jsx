@@ -1,4 +1,6 @@
 import { Dialog, DialogContent, DialogTitle, Paper } from '@mui/material';
+// import {useTasks} from './useTasks'
+
 
 const CustomPaper = (props) => (
 
@@ -22,6 +24,7 @@ function CreateTask( {
   addTask
 }){
 
+    
   const handleSubmit = (e) => {
     e.preventDefault();
     addTask();
@@ -30,14 +33,13 @@ function CreateTask( {
   return(
     <>
       <Dialog open = {openCreateTask} 
-        onClose={() => setOpenCreateTask(false)}
         PaperComponent={CustomPaper}          
       >    
         <DialogTitle >
           <div className='flex w-1/2 text-xs font-semibold text-slate-600'>Create Task</div>
         </DialogTitle>
         {/* Add form elements here for creating a task */}
-        <DialogContent onSubmit={handleSubmit}>
+        <DialogContent>
           <input
             type='text'
             placeholder='Task'
@@ -55,23 +57,29 @@ function CreateTask( {
             onChange={(e)=> setDescription(e.target.value)}
           />
           
+
           <p
             className='p-1 mb-2 text-xs font-normal'
           >Type your target date to complete the task</p>
 
+          {/* Date input with overdue detection */}
           <input
             type="date"
             className="w-full p-2 border border-gray-300 rounded-lg mb-7 sm:text-sm focus:outline-none focus:border-blue-500"
             placeholder='Target Date to complete'
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-          />            
+          />  
+          {dueDate && new Date(dueDate) < new Date() && (
+            <p className="mt-1 text-xs text-red-500">
+            Warning: This date is in the past (status will be set to Overdue)
+            </p>
+          )}          
 
           <div className='flex justify-end gap-3 text-xs md:text-base'>
             {/* Okay button */}
             <button
-            type="submit"
-            onClick={addTask}
+            onClick={handleSubmit}
             >
               <img src='./images/todolist/check-mark.png'
                 className='w-6 h-6 transition-opacity duration-300 hover:opacity-50'
@@ -79,7 +87,7 @@ function CreateTask( {
             </button>
             {/* Close button */}
             <button
-              onClick={addTask}
+              onClick={() => {setOpenCreateTask(false)}}
             >
               <img src='./images/todolist/x-mark.png' 
                 className='w-6 h-6 transition-opacity duration-300 hover:opacity-50'

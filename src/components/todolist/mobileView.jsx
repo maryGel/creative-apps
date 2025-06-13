@@ -2,20 +2,23 @@ import React from 'react';
 
 
 function MobileView({dataTodo, handleComplete }){
+  // {console.log(dataTodo)}
   return (
     <div className={`w-full grid grid-cols-1 gap-4 md:hidden`}>
     {/* Mapping the table content for mobile view */}
     {dataTodo.map ((tableData) => {
+      // {console.log(tableData)}
       return (
         <div key={tableData.id} className='p-4 bg-white rounded-lg shadow '>
           <div className='flex items-center justify-between mb-4'>
             <div className={`css-status-sm  p-1.5 text-center 
               uppercase tracking-wider 
               ${tableData.status === 'Completed' ? "text-green-800 bg-green-100" :
-              tableData.status === 'In-Progress' ? "text-yellow-800 bg-yellow-100" :
+              tableData.status === 'Upcoming' ? "text-yellow-800 bg-yellow-100" :
               "text-red-800 bg-red-100"
               } `}
             > {tableData.status}  
+              {/* {console.log(tableData)} */}
             </div>
             <div>
               <button className="text-blue-400 uppercase hover:text-blue-600">Edit</button>

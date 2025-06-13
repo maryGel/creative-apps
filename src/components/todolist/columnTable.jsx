@@ -17,25 +17,35 @@ export const columnTable = [
     enableResizing: true,
     size: 900,
   },
-  {
+  /*{
     accessorKey: 'status',
     header: 'Status',
     enableResizing: true,
     size: 150,
     cell: ({ row }) => {
-      const status = row.getValue('status');
+      const task = row.original;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      // Calculate effective status (including overdue)
+      const effectiveStatus = 
+        task.duedate < today && !task.complete
+          ? 'Overdue'
+          : task.status;
+          {console.log(task.duedate)}
+          
       return (
         <div className={`flex items-center  `}       
         >
           <span className={`flex px-3 py-2 text-xs font-semibold rounded-lg justify-center 
-            ${status === 'Completed' ? 'bg-green-100 text-green-800' : 
-              status === 'In-Progress' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
-            {status}
+            ${effectiveStatus=== 'Completed' ? 'bg-green-100 text-green-800' : 
+              effectiveStatus === 'In-Progress' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+            {effectiveStatus}
           </span>
         </div>
       );
     },
-  },
+  },*/
   {
     accessorKey: 'duedate',
     header: 'Due Date',

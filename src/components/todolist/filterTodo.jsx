@@ -6,13 +6,7 @@ import Chip from '@mui/material/Chip';
 import { Paper } from '@mui/material';
 
 
-function FilterTodo( ){
-
-  const optionStatus = [
-    'Complete' ,
-    'In-Progress',
-    'Overdue'
-  ];
+function FilterTodo({selectStatuses, onStatusChange, optionStatus }){
 
 const CustomPaper = (props) => (
   <Paper
@@ -21,8 +15,7 @@ const CustomPaper = (props) => (
       '& .MuiAutocomplete-option': {
         fontSize: '0.75rem',
         minHeight: 'auto',
-        lineHeight: 1,
-
+       lineHeight: 1,
       },
     }}
   />
@@ -35,7 +28,8 @@ const CustomPaper = (props) => (
           multiple
           id="tags-outlined"
           options ={optionStatus}
-          defaultValue={[optionStatus[0]]}
+          value = {selectStatuses}
+          onChange={(event, newValue) => onStatusChange(newValue)}
           getOptionLabel={(option) => option}
           PaperComponent={CustomPaper}
           renderValue={(value, getTagProps) => 

@@ -2,23 +2,25 @@ import { useState, useEffect} from 'react';
 import dataTodoApp from './dataTodo';
 
 
-function useTasks(){
+export const useTasks = () => {
 
   const [ tasks, setTasks] = useState(() => {
     const saved = localStorage.getItem('tasks');
     return saved ? JSON.parse(saved) : dataTodoApp;
   })
 
+  {console.log(tasks)}
+
   useEffect (() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
   const addTask = (newTask) => {
-    setTasks([...tasks, {
-      ...newTask,
-      id: tasks.length + 1,
-      status: "In-Progress",
-      complete: false
+    console.log("Parent received:", newTask); // Debug
+    setTasks(prevTasks => [...prevTasks, {
+      ...newTask, // 🔹 Preserves all fields (including status)
+      id: prevTasks.length + 1,
+      complete: false,
     }]);
   };
 
@@ -35,4 +37,4 @@ function useTasks(){
   return { tasks, addTask, updateTask, deleteTask};
 }
 
-export default useTasks;
+// export default useTasks;

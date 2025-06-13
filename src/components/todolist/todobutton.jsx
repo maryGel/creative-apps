@@ -12,16 +12,12 @@ function TodoButtons( { addTask, setOpenFilter}){
 
   const handleAddTask = () => {
     addTask({task, description, duedate: dueDate});
-    setTask('');
-    setDescription('');
-    setDueDate('');
-    setOpenCreateTask(false);
   }
 
   return (
     <>
     <div className='flex justify-end gap-2 align-middle'>
-      {/*  */}
+      {/* Todobuttons */}
       <div className={`relative flex items-center justify-end group`}>
         <button className= {`z-10 px-3`}>
           <input 

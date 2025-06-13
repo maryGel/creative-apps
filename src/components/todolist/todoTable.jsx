@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { 
   useReactTable, 
   flexRender,
@@ -11,9 +11,10 @@ import './todo.css';
 import {columnTable} from './columnTable';
 import MobileView from './mobileView';
 
-function TodoTable({tasks, updateTask}){
+function TodoTable({dataTodo, updateTask}){
+
   // Load data 
-  const dataTodo = React.useMemo(() => tasks, [tasks]);
+
   const finalColumns = React.useMemo(() => columnTable, []);
 
   // Initialize the table with data and columns
@@ -29,15 +30,12 @@ function TodoTable({tasks, updateTask}){
   });
 
   const handleComplete = (id) => {
-    updateTask(id, { complete: true, status: "Completed"});
+    updateTask(id, { complete: true });
   };
-
-  const [editingTask, setEditingTask] = useState(null);
-
+  
   // const handleDelete = (id) => {
   //   deleteTask(id);
   // }
-
 
   return (
     <>
@@ -70,6 +68,7 @@ function TodoTable({tasks, updateTask}){
                       );                      
                     }
                     )}
+                    <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Status</th>  
                     <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Action</th>         
                     <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Complete</th>                   
                  </tr>
@@ -93,13 +92,24 @@ function TodoTable({tasks, updateTask}){
                     
                   }
                   )}
+                  {/* Status */}
+                  <td className = {`p-2 text-xs text-gray-700 border border-gray-200`} >
+                  <button className={`css-status-sm  p-1.5 text-center 
+                    uppercase tracking-wider 
+                    ${rowElement.original.status === 'Completed' ? "text-green-800 bg-green-100" :
+                      rowElement.original.status === 'Upcoming' ? "text-yellow-800 bg-yellow-100" :
+                      rowElement.original.status === 'Due Today' ? "text-yellow-900 bg-yellow-200" :
+                      "text-red-800 bg-red-100"
+                    } `}>
+                    {rowElement.original.status}
+                  </button>
+                </td>
+
                   {/* Edit Button */}
                 <td className = {`p-2 text-xs text-gray-700 border border-gray-200`} >
                   <button 
                     className="text-blue-400 hover:text-blue-600 "
-                    onClick={()=> setEditingTask(rowElement.id)}
-                    openCreateTask={!!editingTask}
-                    initialTask={editingTask}
+                    // onClick={()=> setEditingTask(rowElement.id)}
                   >
                     Edit
                   </button>
