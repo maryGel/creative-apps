@@ -1,4 +1,4 @@
-import React, { useState  } from 'react';
+import React, { useState, useEffect } from 'react';
 import FilterTodo from '../components/todolist/filterTodo.jsx';
 import TodoTable from '../components/todolist/todoTable.jsx';
 import TodoButtons from '../components/todolist/todobutton.jsx';
@@ -13,8 +13,10 @@ function TodoPage(){
   const [openFilter, setOpenFilter] = useState(false);
 
   const optionStatus = ['Upcoming', 'Overdue', 'Due Today', 'Completed'];
-  const [selectedStatuses, setSelectedStatuses] = useState(optionStatus);
+  const defaultFilter = ['Upcoming', 'Overdue', 'Due Today'];
+  const [selectedStatuses, setSelectedStatuses] = useState(defaultFilter);
   
+  //Computation of dynamic status
   const getStatusFromDate = (due) => {
     const today = new Date();
     const dueDate = new Date(due);
@@ -29,34 +31,63 @@ function TodoPage(){
   const dataTodo = React.useMemo(() => {
     return tasks.map(task => {
       const isComplete = task.complete === true || task.complete === "true";
-      const status = isComplete ? "Completed" : getStatusFromDate(task.duedate);
-      return {...task, status};      
+      const date =  task.duedate; // Handle both cases
+      const status = isComplete ? "Completed" : getStatusFromDate(date);
+      return {
+        ...task,
+        status
+      };      
     });
   }, [tasks]);
 
-  console.log(
-    tasks.map(task => ({
-      id: task.id,
-      rawComplete: task.complete,
-      type: typeof task.complete,
-      evaluated: task.complete === true || task.complete === 'true'
-    }))
-  );
-  
+  console.log(dataTodo)
+
+ 
     
   const filteredTasks = dataTodo.filter(task => {
-    return selectedStatuses.includes(task.status);
+    return selectedStatuses.leght === 0 ? false : selectedStatuses.includes(task.status);
   });
 
-  // {console.log(filteredTasks)}
+  // auto refresh when the filtered option is empty
+  useEffect(() => {
+    if (selectedStatuses.length === 0 ) {
+      setTimeout(() => {
+        window.location.reload();
+      },5000)
+    }
+  })
+
+  console.log("Tasks IDs:", tasks.map(t => t.id));
+  console.log("dataTodo IDs:", dataTodo.map(t => t.id));  
+
+  //ligting the useState for the todoTable edit button can access;
+  const [openCreateTask, setOpenCreateTask] = useState(false);
+  const [task, setTask] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [editTask, setEditTask] = useState(null);
+  const [search, setSearch] = useState('');
+
   return (
     <div className='items-center justify-center p-4 bg-gray-100'>
      
       <div className='flex justify-end mb-4'>
         <TodoButtons
-          openFilter = {openFilter}
           setOpenFilter = {setOpenFilter}
           addTask = { addTask }
+          updateTask = {updateTask}
+          openCreateTask = {openCreateTask}
+          setOpenCreateTask = {setOpenCreateTask}
+          task = {task}
+          setTask = {setTask}
+          description = {description}
+          setDescription = {setDescription}
+          dueDate = {dueDate}
+          setDueDate ={setDueDate}
+          editTask = {editTask}
+          setEditTask =  {setEditTask}
+          setSearch = {setSearch}
+          getStatusFromDate = {getStatusFromDate}
         />
       </div>
     
@@ -65,15 +96,19 @@ function TodoPage(){
         selectedStatuses = {selectedStatuses}
         onStatusChange = {setSelectedStatuses}  
         optionStatus = {optionStatus}
-        filteredTasks = {filteredTasks}
+        dataTodo = {dataTodo}
+        
       />}
     <TodoTable
       updateTask = {updateTask}
       deleteTask = { deleteTask } 
-      tasks = {filteredTasks}
-      getStatusFromDate = {getStatusFromDate}
-      dataTodo = {dataTodo}
-      
+      dataTodo = {dataTodo && filteredTasks}
+      setOpenCreateTask ={setOpenCreateTask}
+      setTask = {setTask}
+      setDescription = {setDescription}
+      setDueDate ={setDueDate}
+      setEditTask = {setEditTask}
+      search = {search}
     />
 
     </div>

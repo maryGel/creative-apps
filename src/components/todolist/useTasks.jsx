@@ -4,37 +4,51 @@ import dataTodoApp from './dataTodo';
 
 export const useTasks = () => {
 
-  const [ tasks, setTasks] = useState(() => {
+  const [tasks, setTasks] = useState(() => {
     const saved = localStorage.getItem('tasks');
-    return saved ? JSON.parse(saved) : dataTodoApp;
-  })
-
-  {console.log(tasks)}
+    const initialTasks = saved ? JSON.parse(saved) : dataTodoApp;
+    return initialTasks || [];    
+  });  
 
   useEffect (() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
   const addTask = (newTask) => {
-    console.log("Parent received:", newTask); // Debug
+    console.log("Parent received:", newTask); 
     setTasks(prevTasks => [...prevTasks, {
-      ...newTask, // 🔹 Preserves all fields (including status)
+      ...newTask, 
       id: prevTasks.length + 1,
       complete: false,
     }]);
-  };
+  }; 
 
   const updateTask = (id, updates) => {
-    setTasks(tasks.map(task => 
-      task.id === id? { ...task, ...updates } : task
-    ))
-  }
+    console.log("UPDATE DATA - ID:", id, "UPDATES:", updates); // Debug log
+    setTasks(prevTasks => {
+      const updatedTasks = prevTasks.map(task => {
+        if (task.id === id) {
+          console.log("MERGING:", task, "WITH:", updates); // Debug log
+          return { 
+            ...task, 
+            ...updates,
+            // Ensure consistent date field name:
+            // dueDate: updates.dueDate || task.dueDate || task.duedate,
+            // duedate: undefined // Clean up old field if it exists
+          };
+        }
+        return task;
+      });
+      console.log("UPDATED TASKS:", updatedTasks); // Debug log
+      return updatedTasks;
+    });
+  };
 
   const deleteTask = (id) => {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  return { tasks, addTask, updateTask, deleteTask};
+  return {tasks, addTask, updateTask, deleteTask};
 }
 
 // export default useTasks;

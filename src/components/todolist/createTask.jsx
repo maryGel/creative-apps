@@ -21,14 +21,47 @@ function CreateTask( {
   setDescription,
   dueDate,
   setDueDate,
-  addTask
+  addTask,
+  editTask,
+  updateTask,
+  getStatusFromDate,
+  setEditTask
 }){
 
-    
+  console.log("CreateTask mounted with editTask:", editTask);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask();
+    
+    console.log("SUBMITTING - editTask:", editTask); // Debug log
+    console.log("duedate",dueDate)
+    
+    if (editTask) {
+      const updates = {
+        task,
+        description,
+        duedate: dueDate
+        // Don't include complete here - it should remain unchanged
+      };
+      console.log("CALLING UPDATE WITH:", updates); // Debug log
+      updateTask(editTask, updates);
+    } else {
+      addTask();
+    }
+    
+    // Reset form
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setOpenCreateTask(false);
+    setEditTask(null); // or ''
+    setTask('');
+    setDescription('');
+    setDueDate('');
   }
+  
+  
   
   return(
     <>
@@ -55,8 +88,7 @@ function CreateTask( {
             className='w-full p-2 mb-4 border border-gray-300 rounded-lg sm:text-sm focus:outline-none focus:border-blue-500'
             value={description}
             onChange={(e)=> setDescription(e.target.value)}
-          />
-          
+          />        
 
           <p
             className='p-1 mb-2 text-xs font-normal'
@@ -65,16 +97,16 @@ function CreateTask( {
           {/* Date input with overdue detection */}
           <input
             type="date"
-            className="w-full p-2 border border-gray-300 rounded-lg mb-7 sm:text-sm focus:outline-none focus:border-blue-500"
+            className="w-full p-2 font-normal border border-gray-300 rounded-lg text-gray-340 mb-7 sm:text-sm focus:outline-none focus:border-blue-500"
             placeholder='Target Date to complete'
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />  
-          {dueDate && new Date(dueDate) < new Date() && (
+          { getStatusFromDate(dueDate) === "Overdue" &&
             <p className="mt-1 text-xs text-red-500">
             Warning: This date is in the past (status will be set to Overdue)
             </p>
-          )}          
+          }          
 
           <div className='flex justify-end gap-3 text-xs md:text-base'>
             {/* Okay button */}
@@ -87,7 +119,7 @@ function CreateTask( {
             </button>
             {/* Close button */}
             <button
-              onClick={() => {setOpenCreateTask(false)}}
+              onClick={handleClose}
             >
               <img src='./images/todolist/x-mark.png' 
                 className='w-6 h-6 transition-opacity duration-300 hover:opacity-50'

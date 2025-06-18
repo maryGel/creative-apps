@@ -1,17 +1,32 @@
 import CreateTask from './createTask';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 
 
-function TodoButtons( { addTask, setOpenFilter}){
+function TodoButtons( { 
+    addTask, 
+    setOpenFilter, 
+    openCreateTask, 
+    setOpenCreateTask,
+    task,
+    setTask,
+    description,
+    setDescription,
+    dueDate,
+    setDueDate,
+    editTask,
+    setEditTask,
+    dataTodo,
+    updateTask,
+    setSearch,
+    getStatusFromDate
+  }){
 
-  const [openCreateTask, setOpenCreateTask] = useState(false);
+
   const taskInputRef = useRef(null);
-  const [task, setTask] = useState('');
-  const [description, setDescription] = useState('');
-  const [dueDate, setDueDate] = useState('');
+
 
   const handleAddTask = () => {
-    addTask({task, description, duedate: dueDate});
+    addTask({task, description, duedate: dueDate });
   }
 
   return (
@@ -23,6 +38,7 @@ function TodoButtons( { addTask, setOpenFilter}){
           <input 
             type='Search' 
             placeholder='Search'
+            onChange={(e) => setSearch(e.target.value)}
             className={`
                 absolute right-0 top-1/2 -translate-y-1/2
                 w-0 opacity-0 group-hover:w-60 md:group-hover:w-80 md:group-hover:h-10 group-hover:opacity-100
@@ -78,6 +94,11 @@ function TodoButtons( { addTask, setOpenFilter}){
         dueDate={dueDate}
         setDueDate={setDueDate}
         addTask={handleAddTask}
+        editTask={editTask}
+        setEditTask={setEditTask}
+        dataTodo={dataTodo}
+        updateTask={updateTask}
+        getStatusFromDate = {getStatusFromDate}
       />  
     </>
   );

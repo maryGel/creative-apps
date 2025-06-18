@@ -11,10 +11,20 @@ import './todo.css';
 import {columnTable} from './columnTable';
 import MobileView from './mobileView';
 
-function TodoTable({dataTodo, updateTask}){
+
+function TodoTable({ 
+    dataTodo, 
+    updateTask, 
+    deleteTask, 
+    setOpenCreateTask, 
+    setTask, 
+    setDescription, 
+    setDueDate, 
+    setEditTask, 
+    search  
+  }){
 
   // Load data 
-
   const finalColumns = React.useMemo(() => columnTable, []);
 
   // Initialize the table with data and columns
@@ -33,25 +43,54 @@ function TodoTable({dataTodo, updateTask}){
     updateTask(id, { complete: true });
   };
   
-  // const handleDelete = (id) => {
-  //   deleteTask(id);
-  // }
+  const handleDelete = (id) => {
+    deleteTask(id);
+    alert('Task has been deleted!')
+  }
 
-  return (
+  const handleEdit = (id) => {
+    const taskToEdit = dataTodo.find(task => task.id === id);
+    if (taskToEdit) {
+      console.log("EDITING TASK:", taskToEdit); // Debug log
+      setOpenCreateTask(true);
+      setTask(taskToEdit.task);
+      setDescription(taskToEdit.description);
+      setDueDate(taskToEdit.duedate);
+      setEditTask(id);
+    } 
+  };
+
+  const filteredRows = table.getRowModel().rows.filter((row) => {
+
+    if (!search.trim()) return true;
+
+    //adjust fields
+    const task = row.original.task?.toLowerCase() || '';
+    const description = row.original.description?.toLowerCase() || '';
+    const status = row.original.status?.toLowerCase() || '';
+
+      return (
+        task.includes(search.toLowerCase()) ||
+        description.includes(search.toLowerCase()) ||
+        status.includes(search.toLowerCase())
+        );
+    });
+
+    return (
     <>
-      {/* Laptop  view */}
+      {/* Laptop view */}
       <div className='hidden w-full overflow-auto text-xs rounded-lg shadow table-auto md:block'>
         <table className= {`table-auto w-full text-left text-gray-500`}>
-            <thead className={`bg-gray-50 border-b-2 border-gray-200 `}>
+            <thead className={`bg-gray-50  `}>
               {table.getHeaderGroups().map((headerGroup) => {
                 return (
-                  <tr key= {headerGroup.id}>
+                  <tr key = {headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                       return (
                         <th 
                           key={header.id}
                           colSpan={header.colSpan}
-                          className={`p-3 font-semibold tracking-wide text-left relative border border-gray-300`}
+                          className={`p-3 font-semibold tracking-wide text-left relative border border-gray-200`}
                           style={{ width: header.getSize() }}
                         >
                           {flexRender(header.column.columnDef.header, header.getContext())}
@@ -68,7 +107,7 @@ function TodoTable({dataTodo, updateTask}){
                       );                      
                     }
                     )}
-                    <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Status</th>  
+                    <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-12`} scope="col">Status</th>  
                     <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Action</th>         
                     <th className={`p-3 font-semibold tracking-wide text-left border border-gray-200 w-5`} scope="col">Complete</th>                   
                  </tr>
@@ -77,54 +116,64 @@ function TodoTable({dataTodo, updateTask}){
             </thead>
             <tbody>
               {/* Mapping the table content*/}
-                {table.getRowModel().rows.map((rowElement) => {
+                {filteredRows.map((rowElement) => {
                    return (
-                <tr key={rowElement.id}>
-                  {rowElement.getVisibleCells().map((cell) => {
+                <tr key={rowElement.id} >
+                    {rowElement.getVisibleCells().map((cell) => {
                     return (
                       <td 
                         key={cell.id} 
-                        className={`p-1 px-3 text-xs text-gray-700 border border-gray-200`}
+                        className={`py-1 px-3 text-xs text-gray-700 border border-gray-200`}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
-                    );
-                    
+                    );                    
                   }
                   )}
+                  
                   {/* Status */}
-                  <td className = {`p-2 text-xs text-gray-700 border border-gray-200`} >
-                  <button className={`css-status-sm  p-1.5 text-center 
-                    uppercase tracking-wider 
-                    ${rowElement.original.status === 'Completed' ? "text-green-800 bg-green-100" :
-                      rowElement.original.status === 'Upcoming' ? "text-yellow-800 bg-yellow-100" :
-                      rowElement.original.status === 'Due Today' ? "text-yellow-900 bg-yellow-200" :
-                      "text-red-800 bg-red-100"
-                    } `}>
+                  <td className = {`p-1 text-xs  text-gray-700 border border-gray-200`} >
+                    <button 
+                        className={`css-status-sm  rounded-md p-1.5 text-center uppercase tracking-wider w-20
+                        ${rowElement.original.status === 'Completed' ? "text-green-800 bg-green-100" :
+                          rowElement.original.status === 'Upcoming' ? "text-yellow-800 bg-yellow-100" :
+                          rowElement.original.status === 'Due Today' ? "text-yellow-900 bg-yellow-200" :
+                          "text-red-800 bg-red-100"
+                          }`}
+                    >
                     {rowElement.original.status}
-                  </button>
-                </td>
+                    </button>
+                  </td>
 
-                  {/* Edit Button */}
-                <td className = {`p-2 text-xs text-gray-700 border border-gray-200`} >
-                  <button 
-                    className="text-blue-400 hover:text-blue-600 "
-                    // onClick={()=> setEditingTask(rowElement.id)}
-                  >
-                    Edit
-                  </button>
-                </td>
+                  {/* Actions */}
+                  <td className = {`p-2 text-xs space-x-3 text-center text-gray-700 border border-gray-200`} >
+                    {/* Edit */}
+                      <button 
+                        className='w-4 h-4 transition-transform duration-300 opacity-50 hover:opacity-100 hover:scale-110'
+                        onClick={()=> handleEdit(rowElement.original?.id)}
+                      >
+                        <img src='./images/todolist/draw.png' alt="edit" />
+                      </button>
+                    {/* Delete button */}
+                      <button 
+                        className='w-4 h-4 transition-transform duration-300 opacity-50 hover:opacity-100 hover:scale-110'
+                        onClick={()=> handleDelete(rowElement.original.id)}
+
+                      >
+                        <img src='./images/todolist/delete.png' alt="edit" />
+                      </button>
+                  </td>
                   
                   {/* Complete (star icon) button */}
-                 <td className ={`p-[20%] first-letter my-auto flex justify-center align-center border  border-gray-200`} >
-                  <button
-                    onClick={() => handleComplete(rowElement.original.id)}
-                  >
-                    <img 
-                      className={`w-5 h-5 opacity-30 hover:opacity-100 hover:scale-110 transition-transform duration-300`} 
-                      src='./images/todolist/star.png' alt="complete-task"
-                    />
-                  </button>
+                  <td className ={`m-auto text-center border  border-gray-200`} >
+                    <button onClick={() => handleComplete(rowElement.original.id)}>
+                      <img 
+                        className={`w-5 h-5 hover:opacity-100 hover:scale-110 transition-transform duration-300
+                          ${rowElement.original.complete ? "opacity-100" : "opacity-30"}
+                          `} 
+                        src='./images/todolist/star.png' alt="complete-task"
+                      />
+                    </button>
                   </td>   
                 </tr>
                    )

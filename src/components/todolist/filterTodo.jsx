@@ -6,7 +6,7 @@ import Chip from '@mui/material/Chip';
 import { Paper } from '@mui/material';
 
 
-function FilterTodo({selectStatuses, onStatusChange, optionStatus }){
+function FilterTodo({dataTodo, onStatusChange, optionStatus }){
 
 const CustomPaper = (props) => (
   <Paper
@@ -28,7 +28,7 @@ const CustomPaper = (props) => (
           multiple
           id="tags-outlined"
           options ={optionStatus}
-          value = {selectStatuses}
+          value = {dataTodo.status}
           onChange={(event, newValue) => onStatusChange(newValue)}
           getOptionLabel={(option) => option}
           PaperComponent={CustomPaper}
