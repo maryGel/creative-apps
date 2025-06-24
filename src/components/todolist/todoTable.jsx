@@ -48,6 +48,7 @@ function TodoTable({
     alert('Task has been deleted!')
   }
 
+  //edit the task
   const handleEdit = (id) => {
     const taskToEdit = dataTodo.find(task => task.id === id);
     if (taskToEdit) {
@@ -60,6 +61,7 @@ function TodoTable({
     } 
   };
 
+  // search
   const filteredRows = table.getRowModel().rows.filter((row) => {
 
     if (!search.trim()) return true;
@@ -74,7 +76,7 @@ function TodoTable({
         description.includes(search.toLowerCase()) ||
         status.includes(search.toLowerCase())
         );
-    });
+  });
 
     return (
     <>

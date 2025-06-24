@@ -48,7 +48,6 @@ function Header (){
     </div>
 
       {/* Center Header  */}
-
       <div className="justify-center flex-grow"> 
         <a className='font-semibold '> My Creative Apps </a>
       </div>

@@ -69,13 +69,13 @@ function CreateTask( {
         PaperComponent={CustomPaper}          
       >    
         <DialogTitle >
-          <div className='flex w-1/2 text-xs font-semibold text-slate-600'>Create Task</div>
+          <div className='flex w-1/2 text-xs font-semibold text-slate-600'>Task Details</div>
         </DialogTitle>
         {/* Add form elements here for creating a task */}
         <DialogContent>
           <input
             type='text'
-            placeholder='Task'
+            placeholder='Task Title'
             className='w-full p-2 mb-4 border border-gray-300 rounded-lg sm:text-sm focus:outline-none focus:border-blue-500'
             value={task}
             onChange={(e)=>setTask(e.target.value)}
@@ -84,7 +84,7 @@ function CreateTask( {
           />
           <textarea
             type='text'
-            placeholder='Description'
+            placeholder='Type task description'
             className='w-full p-2 mb-4 border border-gray-300 rounded-lg sm:text-sm focus:outline-none focus:border-blue-500'
             value={description}
             onChange={(e)=> setDescription(e.target.value)}
@@ -92,12 +92,12 @@ function CreateTask( {
 
           <p
             className='p-1 mb-2 text-xs font-normal'
-          >Type your target date to complete the task</p>
+          >Target date to complete the task:</p>
 
           {/* Date input with overdue detection */}
           <input
             type="date"
-            className="w-full p-2 font-normal border border-gray-300 rounded-lg text-gray-340 mb-7 sm:text-sm focus:outline-none focus:border-blue-500"
+            className="w-full p-2 font-normal text-gray-500 border border-gray-400 rounded-lg mb-7 sm:text-sm focus:outline-none focus:border-blue-500"
             placeholder='Target Date to complete'
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}

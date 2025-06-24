@@ -40,9 +40,7 @@ function TodoPage(){
     });
   }, [tasks]);
 
-  console.log(dataTodo)
-
- 
+  console.log(dataTodo) 
     
   const filteredTasks = dataTodo.filter(task => {
     return selectedStatuses.leght === 0 ? false : selectedStatuses.includes(task.status);
@@ -53,14 +51,14 @@ function TodoPage(){
     if (selectedStatuses.length === 0 ) {
       setTimeout(() => {
         window.location.reload();
-      },5000)
+      },3000)
     }
   })
 
   console.log("Tasks IDs:", tasks.map(t => t.id));
   console.log("dataTodo IDs:", dataTodo.map(t => t.id));  
 
-  //ligting the useState for the todoTable edit button can access;
+  //lifting the useState for the todoTable edit button can access;
   const [openCreateTask, setOpenCreateTask] = useState(false);
   const [task, setTask] = useState('');
   const [description, setDescription] = useState('');

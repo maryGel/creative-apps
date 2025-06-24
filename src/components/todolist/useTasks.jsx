@@ -24,17 +24,14 @@ export const useTasks = () => {
   }; 
 
   const updateTask = (id, updates) => {
-    console.log("UPDATE DATA - ID:", id, "UPDATES:", updates); // Debug log
+    // console.log("UPDATE DATA - ID:", id, "UPDATES:", updates); // Debug log
     setTasks(prevTasks => {
       const updatedTasks = prevTasks.map(task => {
         if (task.id === id) {
-          console.log("MERGING:", task, "WITH:", updates); // Debug log
+          // console.log("MERGING:", task, "WITH:", updates); // Debug log
           return { 
             ...task, 
             ...updates,
-            // Ensure consistent date field name:
-            // dueDate: updates.dueDate || task.dueDate || task.duedate,
-            // duedate: undefined // Clean up old field if it exists
           };
         }
         return task;
