@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function MobileView({dataTodo, handleComplete }){
+function MobileView({dataTodo, handleComplete, handleEdit, handleDelete}) {
   // {console.log(dataTodo)}
   return (
     <div className={`w-full grid grid-cols-1 gap-4 md:hidden`}>
@@ -23,14 +23,14 @@ function MobileView({dataTodo, handleComplete }){
                      {/* Edit */}
                      <button 
                         className='w-4 h-4 transition-transform duration-300 opacity-50 hover:opacity-100 hover:scale-110'
-                        // onClick={()=> setEditingTask(rowElement.id)}
+                        onClick={()=> handleEdit(tableData.id)}
                       >
                         <img src='./images/todolist/draw.png' alt="edit" />
                       </button>
                     {/* Delete button */}
                       <button 
                         className='w-4 h-4 transition-transform duration-300 opacity-50 hover:opacity-100 hover:scale-110'
-                        // onClick={()=> handleDelete(rowElement.id)}
+                        onClick={()=> handleDelete(tableData.id)}
                       >
                         <img src='./images/todolist/delete.png' alt="edit" />
                       </button>

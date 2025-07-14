@@ -188,6 +188,9 @@ function TodoTable({
       <MobileView 
       dataTodo={dataTodo}
       handleComplete = {handleComplete}
+      handleEdit = {handleEdit}
+      handleDelete = {handleDelete}
+      search={search}
       />
     </>
   );
